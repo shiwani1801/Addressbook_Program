@@ -106,17 +106,35 @@ public class ContactOperations {
         return flag == 1;
     }
 
+    //For deleting contact
+    public boolean deleteContact(String name) {
+        int flag = 0;
+        for(AddressBook contact: contactDetails)
+        {
+            if(contact.getFirstName().equalsIgnoreCase(name))
+            {
+                contactDetails.remove(contact);
+                flag = 1;
+                break;
+            }
+        }
+        return flag == 1;
+    }
+
     //Print the contact details
-    public void printContact() {
+    public void printContact()
+    {
         AddressBook a = new AddressBook();
         a.printContact(contactDetails);
     }
 
     //Check if array list is empty
-    public boolean checkList() {
+    public boolean checkList()
+    {
         if (!contactDetails.isEmpty())
             return true;
         else
             return false;
+
     }
 }

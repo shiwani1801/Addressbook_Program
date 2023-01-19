@@ -1,7 +1,6 @@
 package com.bridgelabz.addressbook;
 
 import java.util.Scanner;
-
 public class AddressBookSystemMain {
     //Default Constructor
     public AddressBookSystemMain() {
@@ -51,12 +50,28 @@ public class AddressBookSystemMain {
                     break;
 
                 case 3:
+                    if (addressBook.checkList() == true) {
+                        System.out.println("Enter the Contact to be deleted:");
+                        String firstName = scan.next();
+                        boolean listDeleted = addressBook.deleteContact(firstName);
+                        if (listDeleted)
+                        {
+                            System.out.println("Details Deleted");
+                        }
+                        else
+                        {
+                            System.out.println("Cannot be Deleted");
+                        }
+                    }
+                    else
+                        System.out.println("Nothing in the contact list.\nPlease create one");
+                    break;
+
+                case 4:
                     addressBook.printContact();
                     flag = false;
                     break;
             }
         }
-
-
     }
 }
