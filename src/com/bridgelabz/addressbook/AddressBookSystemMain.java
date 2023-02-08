@@ -52,9 +52,7 @@ public class AddressBookSystemMain {
         }
         return flag;
     }
-
     public static void main(String[] args) {
-
         //Initialize Object
         AddressBookSystemMain obj = new AddressBookSystemMain();
 
@@ -73,10 +71,8 @@ public class AddressBookSystemMain {
         //print all address book
         obj.printAddressBooks();
     }
-
     //Performing some contact operation
     public void addressBookOperation() {
-
         boolean flag = true;
 
         while (flag) {
@@ -95,6 +91,11 @@ public class AddressBookSystemMain {
             switch (option) {
                 case "1":
                     addressBook.addContact();
+                    if (addressBook.check == true) {
+                        System.out.println(" Contact added successfully");
+                    } else {
+                        System.out.println("Sorry!!! Contact can't be added");
+                    }
                     break;
 
                 case "2":
@@ -108,7 +109,13 @@ public class AddressBookSystemMain {
                         int numOfContacts = scan.nextInt();
                         for (int i = 1; i <= numOfContacts; i++) {
                             addressBook.addContact();
-                            System.out.println(i + " Contact added successfully");
+                            if (addressBook.check == true) {
+                                System.out.println(i + " Contact added successfully");
+                            } else {
+                                System.out.println("Sorry!!! Contact can't be added");
+                                System.out.println("Please input another one");
+                                i--;
+                            }
                         }
                     } else if (choice == 2) {
                         addressBook.sharedContactCards();

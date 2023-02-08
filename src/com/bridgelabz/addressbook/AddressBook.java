@@ -1,8 +1,5 @@
 package com.bridgelabz.addressbook;
 
-import java.util.Iterator;
-import java.util.List;
-
 public class AddressBook {
     //Declaring variables for Address Book System
     private String firstName;
@@ -83,18 +80,4 @@ public class AddressBook {
                 '}';
     }
 
-    //Printing contactDetails
-    public void printContact(List<AddressBook> list) {
-        if(!list.isEmpty())
-        {
-            System.out.println("Contact details are below.....\n");
-            Iterator it = list.iterator();
-            while (it.hasNext())
-            {
-                System.out.println(it.next());
-            }
-        }
-        else
-            System.out.println("Contact list is empty.");
-    }
 }
