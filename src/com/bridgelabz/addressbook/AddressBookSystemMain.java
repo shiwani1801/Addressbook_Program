@@ -192,19 +192,7 @@ public class AddressBookSystemMain {
                     System.out.println(list);
 
                 }
-//                Iterator<Map.Entry<String , ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
-//                while (itr.hasNext())
-//                {
-//                    Map.Entry<String, ContactOperations> entry = itr.next();
-//                    System.out.println(entry.getKey());
-//                    for (int i = 0; i < entry.getValue().getContact().size(); i++)
-//                    {
-//                        if (entry.getValue().getContact().get(i).getCity().equalsIgnoreCase(searchCity))
-//                        {
-//                            System.out.println(entry.getValue().getContact().get(i));
-//                        }
-//                    }
-//                }
+
                 break;
             case 2 :
                 System.out.println("Enter State name by means of which you want to search");
