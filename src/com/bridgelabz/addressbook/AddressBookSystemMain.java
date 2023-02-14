@@ -1,6 +1,8 @@
 package com.bridgelabz.addressbook;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 public class AddressBookSystemMain {
 
     //Declaring one hashmap containing all the address book
@@ -13,66 +15,6 @@ public class AddressBookSystemMain {
 
     Scanner scan = new Scanner(System.in);
     ContactOperations addressBook;
-
-    //Method to save the address book
-    public void saveAddressBook(String a) {
-        addressBook = new ContactOperations();
-        addressBookOperation();
-        System.out.println("Do you want to save this address book?");
-        String choice = scan.next();
-        if (choice.equalsIgnoreCase("y")) {
-            addressBookDictionary.put(a, addressBook);
-        } else {
-            System.out.println("Address book is not saved");
-        }
-    }
-
-    //Method to print all the address book
-    public void printAddressBooks() {
-        Iterator<Map.Entry<String, ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
-        while (itr.hasNext()) {
-            Map.Entry<String, ContactOperations> entry = itr.next();
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
-        }
-    }
-
-    //Method to check if that given address book name is present or in the address book dictionary
-    public boolean checkBookName(String a) {
-        boolean flag = true;
-        Iterator<Map.Entry<String, ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
-        while (itr.hasNext()) {
-            Map.Entry<String, ContactOperations> entry = itr.next();
-            String s = entry.getKey();
-            if (s.equalsIgnoreCase(a)) {
-                System.out.println("This name : " + a + " is already present in Address Book Dictionary\nGive a new name");
-                flag = false;
-                break;
-            }
-        }
-        return flag;
-    }
-
-    public static void main(String[] args) {
-
-        //Initialize Object
-        AddressBookSystemMain obj = new AddressBookSystemMain();
-
-        //Now saving the address book
-        System.out.println("How many address book you want to save?");
-        int books = obj.scan.nextInt();
-        for (int i = 1; i <= books; i++) {
-            System.out.println("Give one address book name");
-            String a = obj.scan.next();
-            if (obj.checkBookName(a)) {
-                System.out.println("For " + a);
-                obj.saveAddressBook(a);
-            } else
-                i--;
-        }
-        //print all address book
-        obj.printAddressBooks();
-    }
 
     //Performing some contact operation
     public void addressBookOperation() {
@@ -95,6 +37,11 @@ public class AddressBookSystemMain {
             switch (option) {
                 case "1":
                     addressBook.addContact();
+                    if (addressBook.check == true) {
+                        System.out.println(" Contact added successfully");
+                    } else {
+                        System.out.println("Sorry!!! Contact can't be added");
+                    }
                     break;
 
                 case "2":
@@ -108,7 +55,13 @@ public class AddressBookSystemMain {
                         int numOfContacts = scan.nextInt();
                         for (int i = 1; i <= numOfContacts; i++) {
                             addressBook.addContact();
-                            System.out.println(i + " Contact added successfully");
+                            if (addressBook.check == true) {
+                                System.out.println(i + " Contact added successfully");
+                            } else {
+                                System.out.println("Sorry!!! Contact can't be added");
+                                System.out.println("Please input another one");
+                                i--;
+                            }
                         }
                     } else if (choice == 2) {
                         addressBook.sharedContactCards();
@@ -152,5 +105,119 @@ public class AddressBookSystemMain {
                     break;
             }
         }
+    }
+
+    //Method to save the address book
+    public void saveAddressBook(String a) {
+        addressBook = new ContactOperations();
+        addressBookOperation();
+        System.out.println("Do you want to save this address book?");
+        String choice = scan.next();
+        if (choice.equalsIgnoreCase("y")) {
+            addressBookDictionary.put(a, addressBook);
+        } else {
+            System.out.println("Address book is not saved");
+        }
+    }
+
+    //Method to check if that given address book name is present or in the address book dictionary
+    public boolean checkBookName(String a) {
+        boolean flag = true;
+        Iterator<Map.Entry<String, ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry<String, ContactOperations> entry = itr.next();
+            String s = entry.getKey();
+            if (s.equalsIgnoreCase(a)) {
+                System.out.println("This name : " + a + " is already present in Address Book Dictionary\nGive a new name");
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    //Method to print all the address book
+    public void printAddressBooks() {
+        Iterator<Map.Entry<String, ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry<String, ContactOperations> entry = itr.next();
+            System.out.println(entry.getKey());
+            List list = entry.getValue().getContact().stream().
+                    sorted(Comparator.comparing(AddressBook::getFirstName)).collect(Collectors.toList());
+            System.out.println(list);
+        }
+    }
+
+    //Method to search and print persons by means of city and state
+    public void searchPersons() {
+        System.out.println("1. Search by city name");
+        System.out.println("2. Search by state name");
+        System.out.println("Enter your choice by means of that you want to search");
+        int choice = scan.nextInt();
+        switch (choice)
+        {
+            case 1:
+                System.out.println("Enter city name by means of which you want to search");
+                String searchCity = scan.next();
+                long count = 0;
+                Iterator<Map.Entry<String, ContactOperations>> itr = addressBookDictionary.entrySet().iterator();
+                while (itr.hasNext()) {
+                    Map.Entry<String, ContactOperations> entry = itr.next();
+                    System.out.println(entry.getKey());
+                    List<AddressBook> list = entry.getValue().getContact().stream().filter(ContactPerson ->
+                            ContactPerson.getCity().equalsIgnoreCase(searchCity)).collect(Collectors.toList());
+                    long cnt = entry.getValue().getContact().stream().filter(ContactPerson ->
+                            ContactPerson.getCity().equalsIgnoreCase(searchCity)).count();
+                    System.out.println(list);
+                    count = count + cnt;
+                }
+                System.out.println(count);
+
+            case 2 :
+                System.out.println("Enter State name by means of which you want to search");
+                String searchState = scan.next();
+                long count1 = 0;
+                Iterator<Map.Entry<String, ContactOperations>> it = addressBookDictionary.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, ContactOperations> entry = it.next();
+                    System.out.println(entry.getKey());
+                    List<AddressBook> list1 = entry.getValue().getContact().stream().filter(ContactPerson ->
+                            ContactPerson.getState().equalsIgnoreCase(searchState)).collect(Collectors.toList());
+                    System.out.println(list1);
+                    long cnt1 = entry.getValue().getContact().stream().filter(ContactPerson ->
+                            ContactPerson.getCity().equalsIgnoreCase(searchState)).count();
+                    count1 = count1 + cnt1;
+                }
+                System.out.println(count1);
+                break;
+
+            default :
+                System.out.println("Wrong entry. Please try again\n");
+                searchPersons();
+        }
+    }
+    public static void main(String[] args) {
+
+        //Initialize Object
+        AddressBookSystemMain obj = new AddressBookSystemMain();
+
+        //Now saving the address book
+        System.out.println("How many address book you want to save?");
+        int books = obj.scan.nextInt();
+        for (int i = 1; i <= books; i++) {
+            System.out.println("Give one address book name");
+            String a = obj.scan.next();
+            if (obj.checkBookName(a)) {
+                System.out.println("For " + a);
+                obj.saveAddressBook(a);
+            } else
+                i--;
+        }
+
+        //print all address book
+        obj.printAddressBooks();
+
+        //search persons by means of city or state in whole address books
+        obj.searchPersons();
     }
 }

@@ -1,5 +1,4 @@
 package com.bridgelabz.addressbook;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -9,10 +8,37 @@ public class ContactOperations {
 
     //Creating an array list that contains all the contact persons
     private ArrayList<AddressBook> contactDetails;
+    public boolean check;
 
     //Constructor
     public ContactOperations() {
         this.contactDetails = new ArrayList<>();
+    }
+
+    //Adding to list (Considering no duplicate occurs in the list)
+    public void addToList(AddressBook obj) {
+        if (checkList() == false)
+        {
+            contactDetails.add(obj);
+            check = true;
+        }
+        else
+        {
+            boolean flag = contactDetails.stream().anyMatch((ContactPerson)
+                    -> ContactPerson.getFirstName().equalsIgnoreCase(obj.getFirstName()));
+
+
+            if (flag == true)
+            {
+                System.out.println("Already this contact details : "+obj.getFirstName()+" is present in the list");
+                check = false;
+            }
+            else
+            {
+                contactDetails.add(obj);
+                check = true;
+            }
+        }
     }
 
     //For adding contact
@@ -38,7 +64,7 @@ public class ContactOperations {
 
         //Calling Contact person class
         AddressBook details = new AddressBook(firstName, lastName, address, city, state,zip,phoneNumber,email);
-        contactDetails.add(details);
+        addToList(details);
     }
 
     //Adding some contact cards
@@ -50,9 +76,9 @@ public class ContactOperations {
                 "MH", "446734", "7008566789", "prati@gmail.com");
         AddressBook c = new AddressBook("Nilam", "Kose", "Nakhara choke", "Nagpur",
                 "MH", "446789", "9937585846", "nilamgmail.com");
-        contactDetails.add(a);
-        contactDetails.add(b);
-        contactDetails.add(c);
+        addToList(a);
+        addToList(b);
+        addToList(c);
     }
 
     //For editing contact
@@ -175,6 +201,15 @@ public class ContactOperations {
         }
         else
             System.out.println("Contact list is empty.");
+    }
+
+    //Method to get objects of list
+    public ArrayList<AddressBook> getContact() {
+        if(checkList())
+        {
+            return contactDetails;
+        }
+        return null;
     }
 
     //Creating a To string method

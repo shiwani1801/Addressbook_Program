@@ -1,8 +1,5 @@
 package com.bridgelabz.addressbook;
 
-import java.util.Iterator;
-import java.util.List;
-
 public class AddressBook {
     //Declaring variables for Address Book System
     private String firstName;
@@ -62,12 +59,31 @@ public class AddressBook {
     public void setEmail(String email) {
         this.email = email;
     }
-
     //Creating getter method for first name.
     public String getFirstName() {
         return firstName;
     }
-
+    public String getLastName() {
+        return lastName;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public String getCity() {
+        return city;
+    }
+    public String getState() {
+        return state;
+    }
+    public String getZip() {
+        return zip;
+    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    public String getEmail() {
+        return email;
+    }
     //Grab to a toString method
     @Override
     public String toString() {
@@ -83,18 +99,4 @@ public class AddressBook {
                 '}';
     }
 
-    //Printing contactDetails
-    public void printContact(List<AddressBook> list) {
-        if(!list.isEmpty())
-        {
-            System.out.println("Contact details are below.....\n");
-            Iterator it = list.iterator();
-            while (it.hasNext())
-            {
-                System.out.println(it.next());
-            }
-        }
-        else
-            System.out.println("Contact list is empty.");
-    }
 }
